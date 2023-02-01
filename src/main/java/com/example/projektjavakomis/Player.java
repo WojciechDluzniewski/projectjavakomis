@@ -18,8 +18,7 @@ public class Player {
     }
 
 
-    public void getUserOptions()
-    {
+    public void getUserOptions() {
 
         System.out.println("1. Samochody do kupienia.");
         System.out.println("2. Kup samochód.");
@@ -32,8 +31,8 @@ public class Player {
         System.out.println("9. Sprawdź historię napraw samochodu.");
         System.out.println("10. Sprawdź sumę wydatków na naprawy i czyszczenie samochodu");
         Scanner choice = new Scanner(System.in);
-        Integer choiceOfOption = choice.nextInt();
-        switch (choiceOfOption){
+        int choiceOfOption = choice.nextInt();
+        switch (choiceOfOption) {
             case 1:
                 carsToBuy();
                 break;
@@ -65,17 +64,19 @@ public class Player {
                 checkAmountOfCarCostRepairAndClean();
                 break;
 
+            default:
+                System.out.println("Wybierz poprawny numer od 1 do 10.");
+                break;
+
         }
     }
-    
-    private void backToMenu()
-    {
+
+    private void backToMenu() {
 
         System.out.print("Czy chcesz wrócić do głównego menu? Jeśli tak wciśnij 0.");
         Scanner choice = new Scanner(System.in);
         Integer choiceOf = choice.nextInt();
-        if (choiceOf == 0)
-        {
+        if (choiceOf == 0) {
             getUserOptions();
         } else {
             backToMenu();
@@ -83,53 +84,45 @@ public class Player {
 
 
     }
-    private void carsToBuy()
-    {
+
+    private void carsToBuy() {
         System.out.println("1. Samochody do kupienia.");
         backToMenu();
     }
 
-    private void buyCar()
-    {
+    private void buyCar() {
 
     }
 
-    private void repairCar()
-    {
+    private void repairCar() {
 
     }
 
-    private void getCusomerList()
-    {
+    private void getCusomerList() {
 
     }
 
-    private void sellCar()
-    {
+    private void sellCar() {
 
     }
 
-    private void buyAdvertise()
-    {
+    private void buyAdvertise() {
 
     }
 
-    private void checkBalanceOfCash()
-    {
+    private void checkBalanceOfCash() {
 
     }
 
-    private void checkTransactionHistory()
-    {
+    private void checkTransactionHistory() {
 
     }
 
-    private void checkCarRepairHistory()
-    {
+    private void checkCarRepairHistory() {
 
     }
-    private void checkAmountOfCarCostRepairAndClean()
-    {
+
+    private void checkAmountOfCarCostRepairAndClean() {
 
     }
 

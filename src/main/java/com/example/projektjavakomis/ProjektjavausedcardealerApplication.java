@@ -14,6 +14,10 @@ public class ProjektjavausedcardealerApplication {
 	{
 		Game game = new Game();
 		game.startGame();
+
+
+		//Game game = new Game();
+		//game.startGame();
 	}
 
 
