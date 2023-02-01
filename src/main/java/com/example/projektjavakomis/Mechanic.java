@@ -9,4 +9,14 @@ public class Mechanic {
     private Double bodyRepairValue;
     private Double gearboxRepairValue;
 
+    public Mechanic(String name, Double breaksRepairValue, Double suspensionRepairValue, Double engineRepairValue, Double bodyRepairValue, Double gearboxRepairValue) {
+        this.name = name;
+        this.breaksRepairValue = breaksRepairValue;
+        this.suspensionRepairValue = suspensionRepairValue;
+        this.engineRepairValue = engineRepairValue;
+        this.bodyRepairValue = bodyRepairValue;
+        this.gearboxRepairValue = gearboxRepairValue;
+    }
+
+
 }
