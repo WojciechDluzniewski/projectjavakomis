@@ -12,6 +12,8 @@ public class Player {
     private Double cash;
     private final Car[] garage = new Car[0];
 
+
+
     public Player(String name, Double cash) {
         this.name = name;
         this.cash = cash;
@@ -86,7 +88,11 @@ public class Player {
     }
 
     private void carsToBuy() {
-        System.out.println("1. Samochody do kupienia.");
+        System.out.println("Poniżej lista dostępnych samochodów:");
+        Car carToBoBuy1 = CarGenerator.CreateNewCar();
+
+        System.out.println(carToBoBuy1);
+
         backToMenu();
     }
 
@@ -111,7 +117,6 @@ public class Player {
     }
 
     private void checkBalanceOfCash() {
-
     }
 
     private void checkTransactionHistory() {

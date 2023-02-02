@@ -47,4 +47,16 @@ public class CarComponents {
     public void setGearbox(Boolean gearbox) {
         this.gearbox = gearbox;
     }
+
+    @Override
+    public String toString(){
+        StringBuilder builder = new StringBuilder();
+        builder.append(breaks);
+        builder.append(suspension);
+        builder.append(engine);
+        builder.append(body);
+        builder.append(gearbox);
+
+        return builder.toString();
+    }
 }

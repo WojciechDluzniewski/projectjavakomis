@@ -12,6 +12,7 @@ public class Game {
     public void startGame()
     {
 
+        //CarGenerator.init();
 
         Scanner scanner = new Scanner(System.in);
         System.out.print("Witaj w grze Autokomis!");
