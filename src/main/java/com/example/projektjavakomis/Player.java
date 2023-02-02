@@ -3,18 +3,23 @@ package com.example.projektjavakomis;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 
+import java.sql.Array;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 @NoArgsConstructor
 public class Player {
 
     private String name;
-    private Double cash;
-    private final Car[] garage = new Car[0];
+    private long cash;
+    private final ArrayList<Car> playerGarage = new ArrayList<Car>();
 
+    public Mechanic mechanic1 = new Mechanic("Janusz", 0.08,0.16,0.8,0.3, 0.3, 0.0, 0.0);
+    public Mechanic mechanic2 = new Mechanic("Marian", 0.05,0.10,0.5,0.2, 0.2, 0.1, 0.0);
+    public Mechanic mechanic3 = new Mechanic("Adrian", 0.03,0.05,0.3,0.1, 0.1, 0.2, 0.02);
 
-
-    public Player(String name, Double cash) {
+    public Player(String name, long cash) {
         this.name = name;
         this.cash = cash;
     }
@@ -89,14 +94,45 @@ public class Player {
 
     private void carsToBuy() {
         System.out.println("Poniżej lista dostępnych samochodów:");
+        System.out.println("1.");
         Car carToBoBuy1 = CarGenerator.CreateNewCar();
+        System.out.println("2.");
+        Car carToBoBuy2 = CarGenerator.CreateNewCar();
+        System.out.println("3.");
+        Car carToBoBuy3 = CarGenerator.CreateNewCar();
 
         System.out.println(carToBoBuy1);
+        System.out.println(carToBoBuy2);
+        System.out.println(carToBoBuy3);
 
+        System.out.println("Czy chcesz przejść do zakupu samochodu? tak/nie");
+        Scanner scanner = new Scanner(System.in);
+        String choiceOf = scanner.nextLine();
+        if (choiceOf.equals("tak")) {
+            System.out.println("Który samochód chcesz zakupić?");
+
+            Scanner carChosen = new Scanner(System.in);
+            int carChosenNumber = carChosen.nextInt();
+            if (carChosenNumber == 1) {
+                playerGarage.add(carToBoBuy1);
+                this.cash -= carToBoBuy1.getCarValue();
+            } else if (carChosenNumber == 2) {
+                playerGarage.add(carToBoBuy2);
+                this.cash -= carToBoBuy2.getCarValue();
+            } else if (carChosenNumber == 3) {
+                playerGarage.add(carToBoBuy3);
+                this.cash -= carToBoBuy3.getCarValue();
+            }
+            System.out.println(this.cash);
+            System.out.println(playerGarage);
+
+        }
         backToMenu();
+
     }
 
     private void buyCar() {
+
 
     }
 
@@ -117,6 +153,7 @@ public class Player {
     }
 
     private void checkBalanceOfCash() {
+        System.out.println(cash);
     }
 
     private void checkTransactionHistory() {
@@ -140,15 +177,15 @@ public class Player {
         this.name = name;
     }
 
-    public Double getCash() {
+    public long getCash() {
         return cash;
     }
 
-    public void setCash(Double cash) {
+    public void setCash(long cash) {
         this.cash = cash;
     }
 
-    public Car[] getGarage() {
-        return garage;
+    public List<Car> getGarage() {
+        return playerGarage;
     }
 }

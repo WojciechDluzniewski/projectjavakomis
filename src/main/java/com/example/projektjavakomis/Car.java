@@ -1,6 +1,7 @@
 package com.example.projektjavakomis;
 
 import lombok.NoArgsConstructor;
+
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -15,7 +16,6 @@ public class Car {
     public boolean isClean = false;
 
 
-
     public Car(String producer, long value, long mileage, boolean truck, CarComponents carComponents, boolean isClean) {
         this.producer = producer;
         this.value = value;
@@ -27,18 +27,22 @@ public class Car {
 
 
     @Override
-    public String toString(){
+    public String toString() {
         StringBuilder builder = new StringBuilder();
-        builder.append(producer);
-        builder.append(value);
-        builder.append(mileage);
-        builder.append(truck);
-        builder.append(cleanliness);
+        builder.append("Producent: " + producer + "\n");
+        builder.append("Warość : " + value + " $\n");
+        builder.append("Przebieg : " + mileage + " km\n");
+        builder.append((truck ? "Ciężarówka" : "Samochód osobowy") + "\n");
+        builder.append((isClean ? "Czysty" : "Do czyszczenia") + "\n");
         builder.append(carComponents);
 
         return builder.toString();
     }
 
+    public long getCarValue(){
+
+        return this.value;
+    }
 
 
 

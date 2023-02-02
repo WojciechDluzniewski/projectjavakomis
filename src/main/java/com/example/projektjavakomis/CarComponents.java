@@ -49,13 +49,13 @@ public class CarComponents {
     }
 
     @Override
-    public String toString(){
+    public String toString() {
         StringBuilder builder = new StringBuilder();
-        builder.append(breaks);
-        builder.append(suspension);
-        builder.append(engine);
-        builder.append(body);
-        builder.append(gearbox);
+        builder.append((breaks ? "Hamulce sprawne" : "Hamulce niesprawne") + "\n");
+        builder.append((suspension ? "Zawieszenie sprawne" : "Zawieszenie niesprawne") + "\n");
+        builder.append((engine ? "Silnik sprawny" : "Silnik niesprawny") + "\n");
+        builder.append((body ? "Karoseria w dobrym stanie" : "Karoseria do naprawy") + "\n");
+        builder.append((gearbox ? "Skrzynia biegów sprawna" : "Skrzynia biegów niesprawna") + "\n");
 
         return builder.toString();
     }

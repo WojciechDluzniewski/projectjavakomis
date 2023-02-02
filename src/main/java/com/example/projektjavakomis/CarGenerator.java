@@ -44,7 +44,7 @@ public class CarGenerator {
     }
 
     private static String getRandomProducer() {
-        Integer index = (int) (Math.random() * listOfProducers.size());
+        int index = (int)(Math.random() * listOfProducers.size());
         String producer = listOfProducers.get(index);
 
         return producer;
@@ -59,7 +59,7 @@ public class CarGenerator {
 
     private static boolean getRandomTruck() {
 
-        return random.nextBoolean();
+        return random.nextDouble()<0.2;
     }
 
     public static CarComponents getRandomCarComponents() {

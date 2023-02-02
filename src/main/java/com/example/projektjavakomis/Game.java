@@ -12,7 +12,7 @@ public class Game {
     public void startGame()
     {
 
-        //CarGenerator.init();
+        CarGenerator.init();
 
         Scanner scanner = new Scanner(System.in);
         System.out.print("Witaj w grze Autokomis!");
@@ -24,9 +24,10 @@ public class Game {
         System.out.println("\nPodaj imię gracza: \n");
         String nameOfPlayer = scanner.nextLine();
         System.out.println("Witaj "+ nameOfPlayer);
-        Player player = new Player("" +nameOfPlayer, 100000.0);
+        Player player = new Player("" +nameOfPlayer, 100000);
         while (player.getCash() < 200000.0)
         {
+            System.out.println();
             player.getUserOptions();
 
         }
