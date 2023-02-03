@@ -1,62 +1,40 @@
 package com.example.projektjavakomis;
 
+import java.util.ArrayList;
+import java.util.List;
+
+
 public class CarComponents {
 
-    private Boolean breaks;
-    private Boolean suspension;
-    private Boolean engine;
-    private Boolean body;
-    private Boolean gearbox;
+    private List<CarComponent> components;
 
-    public Boolean getBreaks() {
-        return breaks;
-    }
-
-    public void setBreaks(Boolean breaks) {
-        this.breaks = breaks;
-    }
-
-    public Boolean getSuspension() {
-        return suspension;
-    }
-
-    public void setSuspension(Boolean suspension) {
-        this.suspension = suspension;
-    }
-
-    public Boolean getEngine() {
-        return engine;
-    }
-
-    public void setEngine(Boolean engine) {
-        this.engine = engine;
-    }
-
-    public Boolean getBody() {
-        return body;
-    }
-
-    public void setBody(Boolean body) {
-        this.body = body;
-    }
-
-    public Boolean getGearbox() {
-        return gearbox;
-    }
-
-    public void setGearbox(Boolean gearbox) {
-        this.gearbox = gearbox;
+    public CarComponents() {
+        components = new ArrayList<>();
     }
 
     @Override
     public String toString() {
         StringBuilder builder = new StringBuilder();
-        builder.append((breaks ? "Hamulce sprawne" : "Hamulce niesprawne") + "\n");
-        builder.append((suspension ? "Zawieszenie sprawne" : "Zawieszenie niesprawne") + "\n");
-        builder.append((engine ? "Silnik sprawny" : "Silnik niesprawny") + "\n");
-        builder.append((body ? "Karoseria w dobrym stanie" : "Karoseria do naprawy") + "\n");
-        builder.append((gearbox ? "Skrzynia biegów sprawna" : "Skrzynia biegów niesprawna") + "\n");
-
+        for(int i = 0; i < components.size(); i++) {
+            builder.append((i + 1) + " " + components.get(i) + "\n");
+        }
         return builder.toString();
+    }
+
+    public CarComponent getFirstHealthy() {
+        for(int i = 0; i < components.size(); i++) {
+            if(components.get(i).isHealthy()) {
+                return components.get(i);
+            }
+        }
+        return null;
+    }
+
+    public List<CarComponent> getComponents() {
+        return components;
+    }
+
+    public void addComponent(CarComponent component) {
+        this.components.add(component);
     }
 }

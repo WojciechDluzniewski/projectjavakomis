@@ -1,11 +1,16 @@
 package com.example.projektjavakomis;
 
+import com.example.projektjavakomis.transactions.FixTransaction;
+import com.example.projektjavakomis.transactions.Transaction;
+import com.sun.source.tree.BreakTree;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
+import org.w3c.dom.css.Counter;
 
 import java.sql.Array;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 import java.util.Scanner;
 
 @NoArgsConstructor
@@ -14,21 +19,23 @@ public class Player {
     private String name;
     private long cash;
     private final ArrayList<Car> playerGarage = new ArrayList<Car>();
-
-    public Mechanic mechanic1 = new Mechanic("Janusz", 0.08,0.16,0.8,0.3, 0.3, 0.0, 0.0);
-    public Mechanic mechanic2 = new Mechanic("Marian", 0.05,0.10,0.5,0.2, 0.2, 0.1, 0.0);
-    public Mechanic mechanic3 = new Mechanic("Adrian", 0.03,0.05,0.3,0.1, 0.1, 0.2, 0.02);
+    private Random random;
+    private List<Transaction> transactions;
+    private CounterOfMoves counter;
 
     public Player(String name, long cash) {
         this.name = name;
         this.cash = cash;
+        this.random = new Random();
+        this.transactions = new ArrayList<Transaction>();
+        this.counter = new CounterOfMoves();
     }
 
 
     public void getUserOptions() {
 
         System.out.println("1. Samochody do kupienia.");
-        System.out.println("2. Kup samochód.");
+        System.out.println("2. Wyświetl swój garaż.");
         System.out.println("3. Napraw samochód");
         System.out.println("4. Pokaż listę klientów.");
         System.out.println("5. Sprzedaj samochód.");
@@ -44,13 +51,13 @@ public class Player {
                 carsToBuy();
                 break;
             case 2:
-                buyCar();
+                showPlayerGarage();
                 break;
             case 3:
                 repairCar();
                 break;
             case 4:
-                getCusomerList();
+                getCustomerList();
                 break;
             case 5:
                 sellCar();
@@ -94,16 +101,13 @@ public class Player {
 
     private void carsToBuy() {
         System.out.println("Poniżej lista dostępnych samochodów:");
-        System.out.println("1.");
-        Car carToBoBuy1 = CarGenerator.CreateNewCar();
-        System.out.println("2.");
-        Car carToBoBuy2 = CarGenerator.CreateNewCar();
-        System.out.println("3.");
-        Car carToBoBuy3 = CarGenerator.CreateNewCar();
 
-        System.out.println(carToBoBuy1);
-        System.out.println(carToBoBuy2);
-        System.out.println(carToBoBuy3);
+        ArrayList<Car> listOfCarsToBuy = new ArrayList<Car>();
+
+        for(int i = 0; i < 12; i++){
+            listOfCarsToBuy.add(CarGenerator.createNewCar());
+        }
+        System.out.println(listOfCarsToBuy);
 
         System.out.println("Czy chcesz przejść do zakupu samochodu? tak/nie");
         Scanner scanner = new Scanner(System.in);
@@ -113,39 +117,83 @@ public class Player {
 
             Scanner carChosen = new Scanner(System.in);
             int carChosenNumber = carChosen.nextInt();
-            if (carChosenNumber == 1) {
-                playerGarage.add(carToBoBuy1);
-                this.cash -= carToBoBuy1.getCarValue();
-            } else if (carChosenNumber == 2) {
-                playerGarage.add(carToBoBuy2);
-                this.cash -= carToBoBuy2.getCarValue();
-            } else if (carChosenNumber == 3) {
-                playerGarage.add(carToBoBuy3);
-                this.cash -= carToBoBuy3.getCarValue();
-            }
+            playerGarage.add(listOfCarsToBuy.get(carChosenNumber - 1));
+            this.cash -= listOfCarsToBuy.get(carChosenNumber - 1).getCarValue();
+
             System.out.println(this.cash);
             System.out.println(playerGarage);
 
         }
+        counter.incrementMove();
         backToMenu();
 
     }
 
-    private void buyCar() {
-
-
+    private void showPlayerGarage() {
+        System.out.println("Garaż");
+        for(int i = 0; i < playerGarage.size(); i++) {
+            System.out.println((i+1) + ". " + playerGarage.get(i));
+        }
     }
 
     private void repairCar() {
+        System.out.println("Wybierz samochód do naprawy z garażu");
+        showPlayerGarage();
+        Scanner scan = new Scanner(System.in);
+        int choiceOfCar = scan.nextInt();
+        Car car = playerGarage.get(choiceOfCar - 1);
 
+        System.out.println("Wybierz mechanika: ");
+        System.out.println("1. Janusz");
+        System.out.println("2. Marian");
+        System.out.println("3. Adrian");
+        int choiceOfMechanic = scan.nextInt();
+
+
+        System.out.println("Wybierz część którą chcesz naprawić");
+        System.out.println(car.getCarComponents());
+        int choiceOfComponent  = scan.nextInt();
+
+
+        Mechanic mechanic = CarRepair.mechanics.get(choiceOfMechanic - 1);
+
+        CarComponent component = car.getCarComponents().getComponents().get(choiceOfComponent - 1);
+
+        double price = mechanic.repairValueMultiplier * component.getBaseRepairValue() * CarRepair.pricesBasedOnProducer.get(car.getProducer());
+        cash -= Math.round(price);
+
+        boolean success = random.nextDouble() > mechanic.riskOfNotRepaired;
+
+        if(success) {
+            component.fixComponent();
+            System.out.println("Pomyślnie naprawiono " + component.getName());
+            car.setCarValue(Math.round(car.getCarValue() * component.getValueIncrease()));
+        } else {
+            System.out.println("Nie naprawiono " + component.getName());
+        }
+
+        if(random.nextDouble() <= mechanic.riskOfDamage) {
+            CarComponent brokeComponent = car.getCarComponents().getFirstHealthy();
+            brokeComponent.breakComponent();
+            System.out.println(mechanic.name + " zjebal " + brokeComponent.getName());
+            car.setCarValue(Math.round(car.getCarValue() / brokeComponent.getValueIncrease()));
+        }
+
+        System.out.println(component);
+
+        car.addFixToHistory(new FixTransaction(mechanic, component, Math.round(price), counter.getMoveNumber(), car, success));
+
+        counter.incrementMove();
+        backToMenu();
     }
 
-    private void getCusomerList() {
+
+    private void getCustomerList() {
 
     }
 
     private void sellCar() {
-
+        counter.incrementMove();
     }
 
     private void buyAdvertise() {
@@ -153,19 +201,35 @@ public class Player {
     }
 
     private void checkBalanceOfCash() {
-        System.out.println(cash);
+        System.out.println("Twój stan konta to: " + cash);
     }
 
     private void checkTransactionHistory() {
+        System.out.println("Historia Transakcji: ");
 
+        for(int i = 0; i < transactions.size(); i++) {
+            System.out.println((i+1) +  ". " + transactions.get(i));
+        }
     }
 
     private void checkCarRepairHistory() {
+        System.out.println("Wybierz samochód dla któerego chcesz sprawdzić historię napraw: ");
+        showPlayerGarage();
+        Scanner scan = new Scanner(System.in);
+        int choice = scan.nextInt();
 
+        playerGarage.get(choice - 1).showFixesHistory();
+        backToMenu();
     }
 
     private void checkAmountOfCarCostRepairAndClean() {
-
+        long suma = 0;
+        for(int i = 0; i < playerGarage.size(); i++){
+            System.out.println((i + 1) + ". " + playerGarage.get(i).getName() + ": " + playerGarage.get(i).getSumOfCosts() + "\n");
+            suma +=  playerGarage.get(i).getSumOfCosts();
+        }
+        System.out.println("Suma: " + suma);
+        backToMenu();
     }
 
 

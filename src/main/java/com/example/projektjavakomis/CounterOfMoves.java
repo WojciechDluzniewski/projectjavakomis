@@ -2,10 +2,17 @@ package com.example.projektjavakomis;
 
 public class CounterOfMoves {
 
-    private int amountOf = 0;
+    private int amountOf;
 
-    public Integer numberOfMove() {
+    public CounterOfMoves() {
+        amountOf = 1;
+    }
 
-        return amountOf++;
+    public void incrementMove() {
+        amountOf++;
+    }
+
+    public int getMoveNumber() {
+        return amountOf;
     }
 }
