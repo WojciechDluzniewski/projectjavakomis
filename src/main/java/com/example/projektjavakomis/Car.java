@@ -21,7 +21,7 @@ public class Car {
     private List<FixTransaction> fixesHisotry;
     private long sumOfCosts;
 
-    public Car(String name, String producer, long value, long mileage, boolean truck, CarComponents carComponents, boolean isClean) {
+    public Car( String name, String producer, long value, long mileage, boolean truck, CarComponents carComponents, boolean isClean) {
         this.name = name;
         this.producer = producer;
         this.value = value;

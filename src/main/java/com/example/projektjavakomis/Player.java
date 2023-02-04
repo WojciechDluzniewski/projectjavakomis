@@ -52,6 +52,8 @@ public class Player {
 
     public void getUserOptions() {
 
+        System.out.println("Menu Główne: ");
+
         System.out.println("1. Samochody do kupienia.");
         System.out.println("2. Wyświetl swój garaż.");
         System.out.println("3. Napraw samochód");
@@ -117,11 +119,12 @@ public class Player {
 
     }
 
+
     private void carsToBuy() {
         System.out.println("Poniżej lista dostępnych samochodów:");
-
-
-        System.out.println(listOfCarsToBuy);
+        for (int i = 0; i < listOfCarsToBuy.size(); i++) {
+            System.out.println(i + " " + listOfCarsToBuy.get(i));
+        }
 
         System.out.println("Czy chcesz przejść do zakupu samochodu? tak/nie");
         Scanner scanner = new Scanner(System.in);
@@ -192,7 +195,7 @@ public class Player {
         if(random.nextDouble() <= mechanic.riskOfDamage) {
             CarComponent brokeComponent = car.getCarComponents().getFirstHealthy();
             brokeComponent.breakComponent();
-            System.out.println(mechanic.name + " zjebal " + brokeComponent.getName());
+            System.out.println(mechanic.name + " rozwalił " + brokeComponent.getName());
             car.setCarValue(Math.round(car.getCarValue() / brokeComponent.getValueIncrease()));
         }
 

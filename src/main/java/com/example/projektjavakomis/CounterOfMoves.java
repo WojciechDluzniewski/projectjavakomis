@@ -2,7 +2,7 @@ package com.example.projektjavakomis;
 
 public class CounterOfMoves {
 
-    private int amountOf;
+    private static int amountOf;
 
     public CounterOfMoves() {
         amountOf = 1;
@@ -12,7 +12,7 @@ public class CounterOfMoves {
         amountOf++;
     }
 
-    public int getMoveNumber() {
+    public static int getMoveNumber() {
         return amountOf;
     }
 }
