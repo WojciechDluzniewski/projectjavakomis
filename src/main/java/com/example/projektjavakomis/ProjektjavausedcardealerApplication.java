@@ -10,12 +10,9 @@ public class ProjektjavausedcardealerApplication {
 
 	public static void main(String[] args)
 	{
+
 		Game game = new Game();
 		game.startGame();
-
-
-		//Game game = new Game();
-		//game.startGame();
 	}
 
 

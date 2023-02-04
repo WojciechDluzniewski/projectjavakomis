@@ -20,15 +20,33 @@ public class Player {
     private long cash;
     private final ArrayList<Car> playerGarage = new ArrayList<Car>();
     private Random random;
-    private List<Transaction> transactions;
+    private List<Transaction> transactions = new ArrayList<Transaction>();;
     private CounterOfMoves counter;
+    static ArrayList<Car> listOfCarsToBuy = new ArrayList<Car>();
+    private List<Customer>  listOfCustomers = new ArrayList<Customer>();
+    private final int startingNumberOfCustomers = 5;
+    private final int newspaperAdPrice = 1000;
+    private final int internetAdPrice = 200;
+    private final int minNumberOfClientsFromNewspaper = 3;
+    private final int maxNumberOfClientsFromNewspaper = 7;
+
+    public static void carPregenerated(){
+        for(int i = 0; i < 12; i++){
+            listOfCarsToBuy.add(CarGenerator.createNewCar());
+        }
+    }
+
+
+
 
     public Player(String name, long cash) {
         this.name = name;
         this.cash = cash;
         this.random = new Random();
-        this.transactions = new ArrayList<Transaction>();
         this.counter = new CounterOfMoves();
+        for(int i = 0; i < startingNumberOfCustomers; i++) {
+            listOfCustomers.add(CustomerGenerator.createNewCustomer());
+        }
     }
 
 
@@ -102,11 +120,7 @@ public class Player {
     private void carsToBuy() {
         System.out.println("Poniżej lista dostępnych samochodów:");
 
-        ArrayList<Car> listOfCarsToBuy = new ArrayList<Car>();
 
-        for(int i = 0; i < 12; i++){
-            listOfCarsToBuy.add(CarGenerator.createNewCar());
-        }
         System.out.println(listOfCarsToBuy);
 
         System.out.println("Czy chcesz przejść do zakupu samochodu? tak/nie");
@@ -122,9 +136,12 @@ public class Player {
 
             System.out.println(this.cash);
             System.out.println(playerGarage);
+            listOfCarsToBuy.remove(carChosenNumber-1);
+            listOfCarsToBuy.add(CarGenerator.createNewCar());
+            counter.incrementMove();
 
         }
-        counter.incrementMove();
+
         backToMenu();
 
     }
@@ -187,17 +204,78 @@ public class Player {
         backToMenu();
     }
 
+    private void showCustomerList() {
+        for(int i = 0; i < listOfCustomers.size(); i++) {
+            System.out.println((i + 1) + ". " + listOfCustomers.get(i) + "\n");
+        }
+    }
 
     private void getCustomerList() {
-
+        showCustomerList();
+        backToMenu();
     }
 
     private void sellCar() {
-        counter.incrementMove();
+        System.out.println("Wybierz samochód do sprzedaży: ");
+        showPlayerGarage();
+        Scanner scan = new Scanner(System.in);
+        int choice = scan.nextInt();
+        Car carToSell = playerGarage.get(choice - 1);
+
+        System.out.println("Wybierz klienta któremu chcesz sprzedać samochód");
+        Customer buyer = getBuyer(carToSell);
+
+        System.out.println("Przed sprzedażą musisz umyć samochód, 100$ zostanie odjęte od twojego stanu konta. Kontynuuować? tak/nie");
+        String response = scan.nextLine();
+
+        if(response.toLowerCase().equals("tak")) {
+            cash -= 100;
+            playerGarage.remove(choice - 1);
+            listOfCustomers.remove(buyer);
+            listOfCustomers.add(CustomerGenerator.createNewCustomer());
+            listOfCustomers.add(CustomerGenerator.createNewCustomer());
+            cash += (long)(carToSell.getCarValue() * 0.98); //podatek 2%
+            counter.incrementMove();
+        }
+        backToMenu();
+    }
+
+    private Customer getBuyer(Car carToSell) {
+        List<Customer> interestedCustomers = new ArrayList<>();
+        int i = 0;
+        for(Customer c : listOfCustomers) {
+            if(c.isInterstedInGivenCar(carToSell)) {
+                interestedCustomers.add(c);
+                System.out.println((i + 1) + ". " + c + "\n");
+            }
+        }
+        Scanner scan = new Scanner(System.in);
+        int choice = scan.nextInt();
+
+        return listOfCustomers.get(choice - 1);
     }
 
     private void buyAdvertise() {
+        System.out.println("Wybierz rodzaj reklamy do kupienia:");
+        System.out.println("1. Reklama w lokalnej gazecie (kosztuje " + newspaperAdPrice + "$ i przynosi od" +
+                minNumberOfClientsFromNewspaper + " do " + maxNumberOfClientsFromNewspaper + " nowych klientów). \n");
+        System.out.println("2. Reklama w internecie (kosztuje " + internetAdPrice + "$ i przynosi od 1 nowego klienta). \n");
+        Scanner scan = new Scanner(System.in);
+        int choice = scan.nextInt();
 
+        int newClientsNumber = 0;
+
+        if(choice == 1) {
+            newClientsNumber = (int) (minNumberOfClientsFromNewspaper + Math.round(Math.random()  * (maxNumberOfClientsFromNewspaper - minNumberOfClientsFromNewspaper + 1)));
+        } else if(choice == 2) {
+            newClientsNumber = 1;
+        }
+
+        for(int i = 0; i < newClientsNumber; i++) {
+            listOfCustomers.add(CustomerGenerator.createNewCustomer());
+        }
+
+        backToMenu();
     }
 
     private void checkBalanceOfCash() {

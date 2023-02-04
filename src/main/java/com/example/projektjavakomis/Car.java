@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+
 // przydaloby sie ddodac cos co identyfikuje dany samochod
 public class Car {
     private String producer;
@@ -41,12 +42,12 @@ public class Car {
         builder.append("Przebieg : " + mileage + " km\n");
         builder.append((truck ? "Ciężarówka" : "Samochód osobowy") + "\n");
         builder.append((isClean ? "Czysty" : "Do czyszczenia") + "\n");
-        builder.append(carComponents);
+        builder.append(carComponents + "\n");
 
         return builder.toString();
     }
 
-    public long getCarValue(){
+    public long getCarValue() {
 
         return this.value;
     }
@@ -55,9 +56,13 @@ public class Car {
         return producer;
     }
 
-    public String getName() {return name;}
+    public String getName() {
+        return name;
+    }
 
-    public long getSumOfCosts() {return sumOfCosts;}
+    public long getSumOfCosts() {
+        return sumOfCosts;
+    }
 
     public CarComponents getCarComponents() {
         return carComponents;
@@ -69,7 +74,7 @@ public class Car {
 
     public void showFixesHistory() {
         System.out.println("Historia napraw danego samochodu: ");
-        for(int i = 0; i < fixesHisotry.size(); i++) {
+        for (int i = 0; i < fixesHisotry.size(); i++) {
             System.out.println((i + 1) + ". " + fixesHisotry.get(i));
         }
     }
@@ -77,5 +82,13 @@ public class Car {
     public void addFixToHistory(FixTransaction fix) {
         sumOfCosts += fix.getPrice();
         fixesHisotry.add(fix);
+    }
+
+    public String getStatusOfCar() {
+        return carComponents.getStatus();
+    }
+
+    public boolean isTruck() {
+        return truck;
     }
 }

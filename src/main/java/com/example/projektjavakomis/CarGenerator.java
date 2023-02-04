@@ -1,5 +1,7 @@
 package com.example.projektjavakomis;
 
+import lombok.SneakyThrows;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -8,11 +10,10 @@ import java.util.Random;
 public class CarGenerator {
 
 
-
     private static Random random = new Random();
 
 
-    public static void init(){
+    public static void init() {
         listOfProducers.add("Audi");
         listOfProducers.add("BMW");
         listOfProducers.add("Mercedes");
@@ -32,10 +33,10 @@ public class CarGenerator {
         listOfSegments.add("Segment Standard");
         listOfSegments.add("Segment Budget");
     }
+
     private static final ArrayList<String> listOfProducers = new ArrayList<String>();
     private final static ArrayList<String> listOfColours = new ArrayList<String>();
     private final static ArrayList<String> listOfSegments = new ArrayList<String>();
-    private final static ArrayList<String> listofNames = new ArrayList<String>();
 
     public static long getRandomValue() {
         long valueMin = 10000;
@@ -46,18 +47,18 @@ public class CarGenerator {
 
     private static String getRandomName() {
         String s = "";
-        for(int i = 0; i < 10; i++) {
+        for (int i = 0; i < 10; i++) {
             s += getRandomChar();
         }
         return s;
     }
 
     private static char getRandomChar() {
-        return (char)(random.nextInt(25) + 'A');
+        return (char) (random.nextInt(25) + 'A');
     }
 
     private static String getRandomProducer() {
-        int index = (int)(Math.random() * listOfProducers.size());
+        int index = (int) (Math.random() * listOfProducers.size());
         String producer = listOfProducers.get(index);
 
         return producer;
@@ -72,7 +73,7 @@ public class CarGenerator {
 
     private static boolean getRandomTruck() {
 
-        return random.nextDouble()<0.2;
+        return random.nextDouble() < 0.2;
     }
 
     public static CarComponents getRandomCarComponents() {
@@ -86,8 +87,7 @@ public class CarGenerator {
         return carComponents;
     }
 
-    public static Car createNewCar()
-    {
+    public static Car createNewCar() {
         return new Car(getRandomName(), getRandomProducer(), getRandomValue(), getRandomMileage(), getRandomTruck(), getRandomCarComponents(), false);
     }
 
